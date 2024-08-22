@@ -50,7 +50,7 @@ public class HealthCheckResponse {
 
     private final Status status;
 
-    private final Optional<Map<String, Object>> data;
+    private final Map<String, Object> data;
 
     /**
      * Constructor allowing instantiation from 3rd party framework like MicroProfile Rest client
@@ -65,6 +65,22 @@ public class HealthCheckResponse {
     public HealthCheckResponse(String name, Status status, Optional<Map<String, Object>> data) {
         this.name = name;
         this.status = status;
+        this.data = data.orElse(null);
+    }
+
+    /**
+     * Constructor allowing instantiation from 3rd party framework like MicroProfile Rest client
+     *
+     * @param name
+     *            Health Check procedure's name
+     * @param status
+     *            Health Check procedure's status
+     * @param data
+     *            additional data for Health Check procedure
+     */
+    public HealthCheckResponse(String name, Status status, Map<String, Object> data) {
+        this.name = name;
+        this.status = status;
         this.data = data;
     }
 
@@ -72,9 +88,9 @@ public class HealthCheckResponse {
      * Default constructor
      */
     public HealthCheckResponse() {
-        name = null;
-        status = null;
-        data = null;
+        this.name = null;
+        this.status = null;
+        this.data = null;
     }
 
     /**
@@ -166,7 +182,7 @@ public class HealthCheckResponse {
     }
 
     public Optional<Map<String, Object>> getData() {
-        return data;
+        return Optional.ofNullable(data);
     }
 
     private static <T> T find(Class<T> service) {
